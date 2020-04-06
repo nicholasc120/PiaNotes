@@ -61,6 +61,10 @@ class Main
       if (msg.getLength() == 3 && aMsg[2] != 0) {
         println(aMsg[1]);
         pianoKey = aMsg[1];
+        if(pianoKey != keyToPress){
+          score = 0;
+          reset();
+        }
       } 
       // aMsg[0] is something, velocity maybe? Not 100% sure.
       // aMsg[1] is the note value as an int. This is the important one.
