@@ -4,7 +4,8 @@ import java.util.List;
 import java.io.*;
 import javax.swing.*;
 
-
+boolean right, wrong;
+int opacity = 255;
 int pianoKey = -1;
 class Main
 {
@@ -61,9 +62,14 @@ class Main
       if (msg.getLength() == 3 && aMsg[2] != 0) {
         println(aMsg[1]);
         pianoKey = aMsg[1];
-        if(pianoKey != keyToPress){
+        if (pianoKey != keyToPress) {
           score = 0;
           reset();
+          opacity = 255;
+          wrong = true;
+        } else {
+          right = true;
+          opacity = 255;
         }
       } 
       // aMsg[0] is something, velocity maybe? Not 100% sure.
@@ -99,20 +105,23 @@ void setup() {
   background(255);
   main.Main();
   reset();
+  textSize(20);
 }
 
 void draw() {
   background(255);
   fill(0);
-  text("use keys 60-84", 0, 10);
-  text ("Your score is " + score, 0, 20);
+  text("use keys 60-84", 0, 20);
+  text ("Your score is " + score, 0, 40);
   if (pianoKey != -1) {
-    text ("you have pressed key " + pianoKey, 0, 30);
+    text ("you have pressed key " + pianoKey, 0, 60);
   }
-  text(time/60 + "s", 480, 10);
+  text(time/60 + "s", 475, 20);
 
   if (time == 0) {
     println("time's up");
+    wrong = true;
+    opacity = 255;
     score = 0;
     reset();
   } else {
@@ -125,6 +134,23 @@ void draw() {
     reset();
   }
   image(note, 0, 100);
+  if (opacity > 0) {
+    opacity -=5;
+  }
+  if (right) {
+    fill(0, 255, 0, opacity);
+    rect(0, 0, width, height);
+    if (opacity == 0) {
+      right = false;
+    }
+  }
+  if (wrong) {
+    fill(255, 0, 0, opacity);
+    rect(0, 0, width, height);
+    if (opacity == 0) {
+      wrong = false;
+    }
+  }
 } 
 
 void reset() {
